@@ -89,11 +89,11 @@ window.onload = function () {
 
   game.preload('assets/mansion-tileset.png', 
     'assets/sewer-tileset.png', 
-    'assets/images/person.png',
-    'assets/images/mouse.png',
-    'assets/images/gorilla.png',
-    'assets/images/alien.png',
-    'assets/images/ghost.png',
+    'assets/player/person.png',
+    'assets/player/mouse.png',
+    'assets/player/gorilla.png',
+    'assets/player/alien.png',
+    'assets/player/ghost.png',
     'assets/first-floor.json'
   );
 
@@ -116,15 +116,15 @@ window.onload = function () {
       new Sprite(48, 48)
     ];
 
-    costumes[0].image = game.assets['assets/images/person.png'];
+    costumes[0].image = game.assets['assets/player/person.png'];
     costumes[0].speed = 2;
-    costumes[1].image = game.assets['assets/images/mouse.png'];
+    costumes[1].image = game.assets['assets/player/mouse.png'];
     costumes[1].speed = 3;
-    costumes[2].image = game.assets['assets/images/gorilla.png'];
+    costumes[2].image = game.assets['assets/player/gorilla.png'];
     costumes[2].speed = 1;
-    costumes[3].image = game.assets['assets/images/alien.png'];
+    costumes[3].image = game.assets['assets/player/alien.png'];
     costumes[3].speed = 2;
-    costumes[4].image = game.assets['assets/images/ghost.png'];
+    costumes[4].image = game.assets['assets/player/ghost.png'];
     costumes[4].speed = 2;
 
     var select = 0;
