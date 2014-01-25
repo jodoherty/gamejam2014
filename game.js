@@ -1,14 +1,6 @@
 /* vim: set ai ts=8 sw=2 sts=2 et: */
 enchant();
 
-var WALL_RANGE = [25,36],
-    FAKE_WALL_RANGE = [37,40],
-    ANY_WALL_RANGE = [25, 40],
-    HOLE_RANGE = [1,4],
-    DOOR_RANGE = [41,44],
-    UPSTAIRS_RANGE = [45,46],
-    DOWNSTAIRS_RANGE = [47.48];
-
 function normalized(v) {
   if (v.x === 0 || v.y === 0) {
     return {
@@ -21,53 +13,6 @@ function normalized(v) {
     x: v.x/m,
     y: v.y/m
   };
-}
-
-function bounds(sprite) {
-  return {
-    cx: sprite.x+sprite.width/2.0,
-    cy: sprite.y+sprite.height/2.0,
-    l: sprite.x,
-    t: sprite.y,
-    b: sprite.y+sprite.height,
-    r: sprite.x+sprite.width
-  };
-}
-
-function intersect(map, line, range) {
-  var i, max, tile, x, y;
-
-  if (line.start.x - line.end.x === 0) {
-    // Vertical test
-    max = line.end.y;
-    x = line.start.x;
-    for (i=line.start.y; i<max; i+=32) {
-      tile = map.checkTile(x, i);
-      if (tile >= range[0] && tile <= range[1]) {
-        return true;
-      }
-    }
-    tile = map.checkTile(x, max);
-    if (tile >= range[0] && tile <= range[1]) {
-      return true;
-    }
-  } else if (line.start.y - line.end.y === 0) {
-    // Horizontal test
-    max = line.end.x;
-    y = line.start.y;
-    for (i=line.start.x; i<max; i+=32) {
-      tile = map.checkTile(i, y);
-      if (tile >= range[0] && tile <= range[1]) {
-        return true;
-      }
-    }
-    tile = map.checkTile(max, y);
-    if (tile >= range[0] && tile <= range[1]) {
-      return true;
-    }
-  }
-  // Otherwise 
-  return false;
 }
 
 function makeMap(json, image) {
@@ -100,14 +45,9 @@ window.onload = function () {
 
   game.onload = function () {
     var scene = new Scene();
-
-    var maps = {
-      mansion1: makeMap(game.assets['assets/first-floor.json'], game.assets['assets/mansion-tileset.png'])
-    };
-
-    var map = maps.mansion1;
-
-    scene.addChild(map);
+    var tmap = Tiled.Parse(game.assets['assets/first-floor.json'], 
+                          game.assets['assets/mansion-tileset.png']);
+    scene.addChild(tmap.map);
 
     var costumes = [
       new Sprite(48, 48),
@@ -147,27 +87,24 @@ window.onload = function () {
     };
 
     game.addEventListener(Event.ENTER_FRAME, function () {
-      var r = bounds(player),
-          n = normalized(d),
+      var n = normalized(d),
           dx = n.x*player.speed,
           dy = n.y*player.speed;
 
-      if (intersect(map, {start: {x: r.l, y: r.t+dy}, end: {x: r.r, y: r.t+dy}}, WALL_RANGE)) {
-        dy = 0;
-      }
-      if (intersect(map, {start: {x: r.l, y: r.b+dy}, end: {x: r.r, y: r.b+dy}}, WALL_RANGE)) {
-        dy = 0;
-      }
-      if (intersect(map, {start: {x: r.r+dx, y: r.t}, end: {x: r.r+dx, y: r.b}}, WALL_RANGE)) {
-        dx = 0;
-      }
-      if (intersect(map, {start: {x: r.l+dx, y: r.t}, end: {x: r.l+dx, y: r.b}}, WALL_RANGE)) {
-        dx = 0;
-      }
       scene.x -= dx;
       scene.y -= dy;
       player.x += dx;
       player.y += dy;
+
+      var colliRect = tmap.checkCollision(player);
+      if (colliRect.left || colliRect.right) {
+        player.x -= dx;
+        scene.x += dx;
+      }
+      if (colliRect.top || colliRect.bottom) {
+        player.y -= dy;
+        scene.y += dy;
+      }
     });
 
     game.addEventListener(Event.RIGHT_BUTTON_DOWN, function () {
