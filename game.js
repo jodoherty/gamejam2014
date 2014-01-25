@@ -1,3 +1,4 @@
+/* vim: set ai ts=8 sw=2 sts=2 et: */
 enchant();
 
 var WALL_RANGE = [25,36],
