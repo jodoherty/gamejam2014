@@ -1,18 +1,89 @@
 /* vim: set ai ts=8 sw=2 sts=2 et: */
 var Tiled = (function () {
-
   function TMap(json, image) {
     var map = JSON.parse(json);
-    this.map = new Map(32, 32);
-    this.map.image = image;
-    this.overlay = new Map(32, 32);
-    this.overlay.image = image;
     this.width = map.width;
     this.height = map.height;
+    this.callbacks = {};
+    this.levels = [];
+    this.level = 0;
+
+    var level,
+        levelCount = Math.floor(map.layers.length/4);
+
+    for (level = 0; level < levelCount; level++) {
+      this.levels.push(new TLevel(map.layers.slice(4*level, 4*level+4), map.width, map.height, image));
+    }
+  }
+
+  TMap.prototype.setLevel = function (level) {
+    this.level = level;
+  }
+
+  TMap.prototype.map = function () {
+    return this.levels[this.level].map;
+  }
+
+  TMap.prototype.checkCollision = function (sprite) {
+    return this.levels[this.level].checkCollision(sprite);
+  }
+
+  TMap.prototype.place = function (sprite, x, y) {
+    sprite.x = 32*x;
+    sprite.y = 32*y;
+  }
+
+  TMap.prototype.on = function (tileType, fn) {
+    if (this.callbacks[tileType] === undefined) {
+      this.callbacks[tileType] = [fn];
+    } else {
+      this.callbacks[tileType].push(fn);
+    }
+  }
+
+  TMap.prototype.update = function (state) {
+    var i, max,
+        tile = this.map().checkTile(state.player.x-state.player.width/2.0, state.player.y-state.player.height/2.0);
+    if (this.callbacks[tile] !== undefined) {
+      max = this.callbacks[tile].length;
+      for (i=0; i<max; i++) {
+        this.callbacks[tile][i]();
+      }
+    }
+  }
+
+  function TLayer(data, width, height, collision) {
+    this.data = [];
+    this.width = width;
+    this.height = height;
+    for (var i=0; i<height; i++) {
+      this.data.push(data.slice(i*width, (i+1)*width));
+      if (!collision) {
+        for (var j=0; j<width; j++) {
+          this.data[i][j]--;
+        }
+      }
+    }
+  }
+
+  function TLevel(layers, width, height, tileset) {
+    var collision;
+    var count = 0;
+    this.map = new Map(32, 32);
+    this.map.image = tileset;
+    this.overlay = new Map(32, 32);
+    this.overlay.image = tileset;
     this.layers = [];
-    for (var i=0; i<map.layers.length; i++) {
-      if (map.layers[i].type === "tilelayer") {
-        this.layers.push(new TLayer(map.layers[i].data, map.width, map.height));
+    for (var i=0; i<layers.length; i++) {
+      if (layers[i].type === "tilelayer") {
+        // Every third layer is a collision layer
+        if (count === 2) {
+          collision = true;
+        } else {
+          collision = false;
+        }
+        this.layers.push(new TLayer(layers[i].data, width, height, collision));
+        count = (count+1)%3;
       }
     }
     this.map.loadData(this.layers[0].data);
@@ -20,7 +91,7 @@ var Tiled = (function () {
     this.map.collisionData = this.layers[2].data;
   }
 
-  TMap.prototype.intersect = function (line) {
+  TLevel.prototype.intersect = function (line) {
     var i, max, tile, x, y;
 
     if (line.start.x - line.end.x === 0) {
@@ -52,7 +123,7 @@ var Tiled = (function () {
     return false;
   }
 
-  TMap.prototype.checkCollision = function (sprite) {
+  TLevel.prototype.checkCollision = function (sprite) {
     var left = false,
         right = false, 
         top = false, 
@@ -95,15 +166,6 @@ var Tiled = (function () {
       bottom: bottom
     };
   };
-
-  function TLayer(data, width, height) {
-    this.data = [];
-    this.width = width;
-    this.height = height;
-    for (var i=0; i<height; i++) {
-      this.data.push(data.slice(i*width, (i+1)*width));
-    }
-  }
 
   return {
     Parse: function (json, image) {
