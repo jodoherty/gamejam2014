@@ -4,7 +4,7 @@ var Tiled = (function () {
     var map = JSON.parse(json);
     this.width = map.width;
     this.height = map.height;
-    this.callbacks = {};
+    this.callbacks = [];
     this.levels = [];
     this.level = 0;
 
@@ -14,6 +14,10 @@ var Tiled = (function () {
     for (level = 0; level < levelCount; level++) {
       this.levels.push(new TLevel(map.layers.slice(4*level, 4*level+4), map.width, map.height, image));
     }
+  }
+
+  TMap.prototype.currentLevel = function () {
+    return this.levels[this.level];
   }
 
   TMap.prototype.setLevel = function (level) {
@@ -33,22 +37,21 @@ var Tiled = (function () {
     sprite.y = 32*y;
   }
 
-  TMap.prototype.on = function (tileType, fn) {
-    if (this.callbacks[tileType] === undefined) {
-      this.callbacks[tileType] = [fn];
+  TMap.prototype.on = function (eventNum, fn) {
+    if (this.callbacks[eventNum] === undefined) {
+      this.callbacks[eventNum] = [fn];
     } else {
-      this.callbacks[tileType].push(fn);
+      this.callbacks[eventNum].push(fn);
     }
   }
 
   TMap.prototype.update = function (state) {
-    var i, max,
-        tile = this.map().checkTile(state.player.x-state.player.width/2.0, state.player.y-state.player.height/2.0);
-    if (this.callbacks[tile] !== undefined) {
-      max = this.callbacks[tile].length;
-      for (i=0; i<max; i++) {
-        this.callbacks[tile][i]();
-      }
+    var level = this.currentLevel(),
+        x = Math.floor((state.player.x+state.player.width/2)/32),
+        y = Math.floor((state.player.y+state.player.height)/32),
+        evNum = level.eventIndex(x,y);
+    if (evNum > 0) {
+      console.log(evNum);
     }
   }
 
@@ -67,7 +70,7 @@ var Tiled = (function () {
   }
 
   function TLevel(layers, width, height, tileset) {
-    var collision;
+    var keepIndices;
     var count = 0;
     this.map = new Map(32, 32);
     this.map.image = tileset;
@@ -77,18 +80,22 @@ var Tiled = (function () {
     for (var i=0; i<layers.length; i++) {
       if (layers[i].type === "tilelayer") {
         // Every third layer is a collision layer
-        if (count === 2) {
-          collision = true;
+        if (count >= 2) {
+          keepIndices = true;
         } else {
-          collision = false;
+          keepIndices = false;
         }
-        this.layers.push(new TLayer(layers[i].data, width, height, collision));
-        count = (count+1)%3;
+        this.layers.push(new TLayer(layers[i].data, width, height, keepIndices));
+        count = (count+1)%4;
       }
     }
     this.map.loadData(this.layers[0].data);
     this.overlay.loadData(this.layers[1].data);
     this.map.collisionData = this.layers[2].data;
+  }
+
+  TLevel.prototype.eventIndex = function (x, y) {
+    return this.layers[3].data[x][y];
   }
 
   TLevel.prototype.intersect = function (line) {

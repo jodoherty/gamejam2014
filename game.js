@@ -11,13 +11,12 @@ window.onload = function () {
     'assets/player/gorilla.png',
     'assets/player/alien.png',
     'assets/player/ghost.png',
-    'assets/first-floor.json',
-    'assets/Masion Tile Set.png'
+    'assets/map.json'
   );
 
   game.onload = function () {
-    var tmap = Tiled.Parse(game.assets['assets/first-floor.json'], 
-                           game.assets['assets/Masion Tile Set.png']);
+    var tmap = Tiled.Parse(game.assets['assets/map.json'], 
+                           game.assets['assets/mansion-tileset.png']);
     tmap.setLevel(0);
     var costumes = [
       new Sprite(48, 48),
