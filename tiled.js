@@ -26,10 +26,13 @@ var Tiled = (function () {
 
   TMap.prototype.map = function () {
     return this.levels[this.level].map;
-  }
+  };
+  TMap.prototype.objects = function () {
+    return this.levels[this.level].overlay;
+  };
 
-  TMap.prototype.checkCollision = function (sprite) {
-    return this.levels[this.level].checkCollision(sprite);
+  TMap.prototype.checkCollision = function (sprite, gorilla) {
+    return this.levels[this.level].checkCollision(sprite, gorilla);
   }
 
   TMap.prototype.place = function (sprite, x, y) {
@@ -50,8 +53,24 @@ var Tiled = (function () {
         x = Math.floor((state.player.x+state.player.width/2)/32),
         y = Math.floor((state.player.y+state.player.height)/32),
         evNum = level.eventIndex(x,y);
-    if (evNum > 0) {
-      console.log(evNum);
+    if (evNum >= 0 && this.callbacks[evNum] !== undefined) {
+      if (!state.nullEvent) {
+        var ev = {
+          x: x,
+          y: y,
+          tile: level.layers[0].data[x,y],
+          remove: function () {
+            level.removeEvent(x,y);
+          }
+        };
+        for (var i=0; i<this.callbacks[evNum].length; i++) {
+          state.playable = false;
+          this.callbacks[evNum][i](ev);
+          state.nullEvent = true;
+        }
+      }
+    } else {
+      state.nullEvent = false;
     }
   }
 
@@ -80,7 +99,7 @@ var Tiled = (function () {
     for (var i=0; i<layers.length; i++) {
       if (layers[i].type === "tilelayer") {
         // Every third layer is a collision layer
-        if (count >= 2) {
+        if (count === 2) {
           keepIndices = true;
         } else {
           keepIndices = false;
@@ -95,10 +114,23 @@ var Tiled = (function () {
   }
 
   TLevel.prototype.eventIndex = function (x, y) {
-    return this.layers[3].data[x][y];
+    return this.layers[3].data[y][x];
   }
 
-  TLevel.prototype.intersect = function (line) {
+  TLevel.prototype.removeEvent = function (x, y) {
+    this.layers[3].data[y][x] = -1;
+  }
+
+  TLevel.prototype.hitTest = function (x, y, gorilla) {
+    if (!gorilla) {
+      var my = Math.floor(y/32),
+          mx = Math.floor(x/32);
+      return this.map.hitTest(x,y) || this.layers[3].data[my][mx] === 120;
+    }
+    return this.map.hitTest(x,y);
+  };
+
+  TLevel.prototype.intersect = function (line, gorilla) {
     var i, max, tile, x, y;
 
     if (line.start.x - line.end.x === 0) {
@@ -106,11 +138,11 @@ var Tiled = (function () {
       max = line.end.y;
       x = line.start.x;
       for (i=line.start.y; i<max; i+=32) {
-        if (this.map.hitTest(x, i)) {
+        if (this.hitTest(x, i, gorilla)) {
           return true;
         }
       }
-      if (this.map.hitTest(x, max)) {
+      if (this.hitTest(x, max, gorilla)) {
         return true;
       }
     } else if (line.start.y - line.end.y === 0) {
@@ -118,11 +150,11 @@ var Tiled = (function () {
       max = line.end.x;
       y = line.start.y;
       for (i=line.start.x; i<max; i+=32) {
-        if (this.map.hitTest(i, y)) {
+        if (this.hitTest(i, y, gorilla)) {
           return true;
         }
       }
-      if (this.map.hitTest(max, y)) {
+      if (this.hitTest(max, y, gorilla)) {
         return true;
       }
     }
@@ -130,40 +162,42 @@ var Tiled = (function () {
     return false;
   }
 
-  TLevel.prototype.checkCollision = function (sprite) {
+  TLevel.prototype.checkCollision = function (sprite, gorilla) {
     var left = false,
         right = false, 
         top = false, 
         bottom = false,
+        cx = sprite.x+sprite.width/2,
+        b = sprite.y+sprite.height,
         bounds = {
-          left: sprite.x,
-          right: sprite.x+sprite.width,
-          top: sprite.y,
-          bottom: sprite.y+sprite.height
+          left: cx-sprite.colbox.width/2,
+          right: cx+sprite.colbox.width/2,
+          top: b-sprite.colbox.height,
+          bottom: b
         };
 
     if (this.intersect({
           start: {x: bounds.left, y: bounds.top}, 
           end: {x: bounds.right, y: bounds.top}
-        })) {
+        }, gorilla)) {
       top = true;
     }
     if (this.intersect({
           start: {x: bounds.left, y: bounds.bottom}, 
           end: {x: bounds.right, y: bounds.bottom}
-        })) {
+        }, gorilla)) {
       bottom = true;
     }
     if (this.intersect({
           start: {x: bounds.right, y: bounds.top}, 
           end: {x: bounds.right, y: bounds.bottom}
-        })) {
+        }, gorilla)) {
       right = true;
     }
     if (this.intersect({
           start: {x: bounds.left, y: bounds.top}, 
           end: {x: bounds.left, y: bounds.bottom}
-        })) {
+        }, gorilla)) {
       left = true;
     }
     return {
@@ -172,6 +206,11 @@ var Tiled = (function () {
       top: top,
       bottom: bottom
     };
+  };
+
+  TLevel.prototype.removeObject = function (x, y) {
+    this.layers[1].data[y][x] = -1;
+    this.overlay.loadData(this.layers[1].data);
   };
 
   return {
