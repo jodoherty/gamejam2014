@@ -24,7 +24,23 @@ var State = (function () {
     this.game = game;
     this.tmap = tmap;
     this.direction = 0;
+    this.teleporters = false;
     this.player = new Sprite();
+    this.player.frame = 1;
+    this.action = "standing";
+    this.direction = "down";
+    this.walking = {
+      left: [6,7],
+      right: [8,9],
+      up: [10,11],
+      down: [4,5]
+    };
+    this.standing = {
+      left: 2,
+      right: 3,
+      down: 1,
+      back: 0
+    };
     this.costume = 0;
     this.costumeLimit = 1;
     this.changeCostumes();
@@ -40,20 +56,13 @@ var State = (function () {
     game.pushScene(this.scene);
     this.playable = false;
     this.nullEvent = false;
+    this.step = 0;
 
     var state = this;
     this.tmap.on('over', 127, function () {
       // Fall down to the basement 
       state.stop();
       game.assets['assets/sounds/falling.wav'].play();
-      state.toLevel(1, 500, function () {
-        state.playable = true;
-      });
-    });
-    this.tmap.on('over', 125, function () {
-      // Take stairs to the basement 
-      state.stop();
-      game.assets['assets/sounds/stairs.wav'].play();
       state.toLevel(1, 500, function () {
         state.playable = true;
       });
@@ -66,11 +75,11 @@ var State = (function () {
         state.playable = true;
       });
     });
-    this.tmap.on('over', 123, function () {
-      // Fall to the first floor
+    this.tmap.on('over', 125, function () {
+      // Take stairs to the basement 
       state.stop();
-      game.assets['assets/sounds/falling.wav'].play();
-      state.toLevel(0, 500, function () {
+      game.assets['assets/sounds/stairs.wav'].play();
+      state.toLevel(1, 500, function () {
         state.playable = true;
       });
     });
@@ -78,7 +87,15 @@ var State = (function () {
       // Take stairs to the second floor
       state.stop();
       game.assets['assets/sounds/stairs.wav'].play();
-      state.toLevel(3, 500, function () {
+      state.toLevel(4, 500, function () {
+        state.playable = true;
+      });
+    });
+    this.tmap.on('over', 123, function () {
+      // Fall to the first floor
+      state.stop();
+      game.assets['assets/sounds/falling.wav'].play();
+      state.toLevel(0, 500, function () {
         state.playable = true;
       });
     });
@@ -113,6 +130,50 @@ var State = (function () {
         state.playable = true;
       }
     });
+    this.tmap.on('over', 119, function () {
+      state.stop();
+      game.assets['assets/sounds/stairs.wav'].play();
+      state.toLevel(3, 500, function () {
+        state.playable = true;
+      });
+    });
+    this.tmap.on('over', 118, function () {
+      if (state.teleporters) {
+        state.player.x = 32*5;
+        state.player.y = 32*8;
+      }
+      state.playable = true;
+    });
+    this.tmap.on('over', 117, function () {
+      if (state.teleporters) {
+        state.player.x = 32*8;
+        state.player.y = 32*8;
+      }
+      state.playable = true;
+    });
+    this.tmap.on('over', 116, function () {
+      if (state.teleporters) {
+        state.player.x = 32*9;
+        state.player.y = 32*5;
+      }
+      state.playable = true;
+    });
+    this.tmap.on('over', 115, function () {
+      if (state.teleporters) {
+        state.player.x = 32*9;
+        state.player.y = 32*8;
+      }
+      state.playable = true;
+    });
+    this.tmap.on('over', 114, function () {
+      state.finish();
+    });
+    this.tmap.on('touch', 113, function () {
+      // Activate teleporters
+      state.teleporters = true;
+      state.tmap.currentLevel().removeObject(39, 4);
+      state.playable = true;
+    });
 
     var state = this;
     setTimeout(function () {
@@ -125,10 +186,16 @@ var State = (function () {
     state.scene.removeChild(state.player);
     state.scene.removeChild(state.tmap.map());
     state.scene.removeChild(state.tmap.objects());
+    state.tmap.currentLevel().entities.forEach(function (obj) {
+      state.scene.removeChild(obj);
+    });
     state.tmap.setLevel(level);
     setTimeout(function () {
       state.scene.addChild(state.tmap.map());
       state.scene.addChild(state.tmap.objects());
+      state.tmap.currentLevel().entities.forEach(function (obj) {
+        state.scene.addChild(obj);
+      });
       state.scene.addChild(state.player);
       next();
     }, timeout);
@@ -149,6 +216,8 @@ var State = (function () {
     if (colliRect.top || colliRect.bottom) {
       this.player.y -= dy;
     }
+    this.player.colbox.x = this.player.x;
+    this.player.colbox.y = this.player.y;
     // Keep the player centered on the camera
     this.follow();
 
@@ -158,6 +227,31 @@ var State = (function () {
 
     this.tmap.update(this);
     
+
+    if (this.v.x !== 0 || this.v.y !== 0) {
+      this.action = "walking";
+    } else {
+      this.action = "standing";
+    }
+    if (this.v.x < 0) {
+      this.direction = "left";
+    } else if (this.v.x > 0) {
+      this.direction = "right";
+    } else if (this.v.y < 0) {
+      this.direction = "up";
+    } else if (this.v.y > 0) {
+      this.direction = "down";
+    }
+
+    if (this.step % 15 === 0 && this.action === "walking") {
+      this.player.frame++;
+    }
+
+    if (this.player.frame < this.walking[this.direction][0] || this.player.frame > this.walking[this.direction][1]) {
+      this.player.frame = this.walking[this.direction][0];
+    }
+
+    this.step++;
   };
 
   State.prototype.follow = function() {
@@ -167,7 +261,6 @@ var State = (function () {
 
   State.prototype.rightStart = function() {
     this.v.x = 1;
-    this.direction = RIGHT;
   };
   State.prototype.rightEnd = function() {
     if (this.v.x > 0) {
@@ -176,7 +269,6 @@ var State = (function () {
   };
   State.prototype.leftStart = function() {
     this.v.x = -1;
-    this.direction = LEFT;
   };
   State.prototype.leftEnd = function() {
     if (this.v.x < 0) {
@@ -185,7 +277,6 @@ var State = (function () {
   };
   State.prototype.upStart = function() {
     this.v.y = -1;
-    this.direction = UP;
   };
   State.prototype.upEnd = function() {
     if (this.v.y < 0) {
@@ -194,7 +285,6 @@ var State = (function () {
   };
   State.prototype.downStart = function() {
     this.v.y = 1;
-    this.direction = DOWN;
   };
   State.prototype.downEnd = function() {
     if (this.v.y > 0) {
@@ -240,6 +330,20 @@ var State = (function () {
     this.player.x = cx-this.player.width/2.0;
     this.player.y = y-this.player.height;
     this.player.colbox = this.costumes[this.costume].colbox;
+    this.player.frame = 1;
+  };
+  
+  State.prototype.end = function () {
+    // Game Over
+    if (this.onend) {
+      this.onend();
+    }
+  };
+
+  State.prototype.finish = function () {
+    if (this.onwin) {
+      this.onwin();
+    }
   };
 
   return State;

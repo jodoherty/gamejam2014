@@ -3,64 +3,64 @@
  <tileset firstgid="1" name="Masion" tilewidth="32" tileheight="32">
   <image source="Masion Tile Set.png" width="256" height="512"/>
  </tileset>
- <layer name="F1 Floor" width="50" height="40" opacity="0.27">
+ <layer name="F1 Floor" width="50" height="40">
   <data encoding="base64" compression="zlib">
-   eJztls0OgjAQhPdCQBMPcFbf/zEtkYMxdv9tt2QnmQuUsl+nWwDw0VI8H16c5uyh5IilM3Fciq8wPsdavMH4HGfZV8kRR8kRS5E59nruxY/iJ+D1ReeYgVffaByYueMk/gcHZslYyZw9OXrkwd0r0fOw1Kpl3r3/G0/w/j/GMmzFoV3r6cMR8qiNo7weDJsjh8SW3o7SH1g+1DzJ0Z5D+43Hxmg4qF6garCuhVceXtn04rCcKZI99mt+znMSDm39tXo0mX3fvxk4sHWkrntxeORBZV97r7ZXOOtl5ajVKeHAeoWzpz36Q8uhzaYFh7RvPM5Ab46elnJEdiqVsukFnvobWQ==
+   eJztlt0KwjAMhXsjm4IX81p9/8e0Qy9CSdq0PUk7XOCAik36LX8LAWNr1PLTCvI5wv6ZYyWaxVo5Zsvffpdr1C0cn2OLeoTjc9C60krzf0+jHEiN5EDlw4uDi5uLnd6Nu2uO0cqkWurl8K4vNEeaVxTHfvYZ9Yp6M75yPRGY37TzyYKD86XtCeQMs+LQxOGe/yJ89s6HFKvEwXFx5zw4JP/SXNRypD01mqO0y+h36Z45Xz0cGml7lJ7Z340v4ft+rNkhlvuDxiyxpmcuREfiSHtg+zE8JuOo2QGle47i0PYQ1ye5XJbmobfV7oqePGifa6ukXaHtqRqO2neeVlnWyMmB40DVlaauUZLuQHnvDRw5v+lst5qD0nND+s391hujlH9EjF4O7Uy2nAkojtGzTcpzbe/PwjFSKA7PWYzYHzVs1jvZw06Oucy6blvtA17nGT0=
   </data>
  </layer>
  <layer name="F1 Overlay" width="50" height="40" visible="0">
   <data encoding="base64" compression="zlib">
-   eJzt06ENACAMBEA2gP2nRWAQCEwhhbsEV8E331IAAACIUqe3M5edHOfsdotYr+xfjvvcNAzugKxWvc3Y5R9ztMiPACl1QFUBlw==
+   eJzt07ERACAIA0A20P2ntbfSglOO/xKapEgEAAAAAPCbcXi7+b+gB9DBvveq++/YY2YGAUpawykA8g==
   </data>
  </layer>
  <layer name="F1 Wall" width="50" height="40" visible="0" opacity="0.53">
   <data encoding="base64" compression="zlib">
-   eJztldEOgCAIRe3/f7rX5hK4cDXa7tncWmFyVHQMDtfi+W/Ioxfy6IU8eiGPXsijF5095nys/OSxnzcPq0XjkLbDgxV7+p9Zjy/Wg/kfNrvG9+qlwsl5RM4vBl97sPY9sz6s8dHaRjlVn8jdJw9+rNW3csdbMYxc5jgvhwxWv4pHlg4ejLsM3UNIv+j4jPsssq6ZsyDrYc2J994bO+rBWA9kTq7F9+q+Znus8vS+R2slkiejPrIemTyq/aMeaN0wzsBnDpG4bF2eAPXo3IQQNW4lRwFd
+   eJztlVEOxCAIRNv7X3p/jXFk0IFi1kmMu4aCTxCfR6MX/D5N/8zxNqOKVjk89hm6HLU52MHYZyoq3pccqnz0fqOE8o9i93sb7XXGGCVrv2jd4vD4VEjNMTv3HY7+29l/tu7RulU/ERzsnVDWQhQHEwdxMzlj/LMacaBYFkc/ozPJ4EA2FpvFwbwXmRzWW8bUpff+M7L2yPpn3rTMnjHSSi89mcO6A1U4PLZVObx5QO8J+mb3nqvkfSu8Nr195OhjeGJ6ObIUGety6GKp6oqpa+V9YfgU5zvqM5F9EJ2b0u9sbTeGlX9FjHZGa5aPnb5aiUOxB4WP3buv2MPXPnal4sjsxRH5nLG186m6HLUUXber+gFXfgG+
   </data>
  </layer>
  <layer name="F1 Events" width="50" height="40" visible="0">
   <data encoding="base64" compression="zlib">
-   eJzt1kEKgDAMRNFcu4IlRxfBRReCQdRm4n+QXQMdmkDNAHzBj1LnViMHAMy0DgWgvjZU5Jy6SA63/P9KhRzR2brilv89MquwtztyzPfUTgOZ9Bs97AFUnc2t4iz/Mcfy5kUASNoAA+cVOg==
+   eJzt1jEOgDAIBVCurYmGo7s4GCcd2ob2vYQFFv5AQgTQQ95VXcYcOQBGOh4FsKKMOf7KDDmAtraPvT/zEeRY1zl6Aejofe9V73/FHHvLRYCSLlasEAc=
   </data>
  </layer>
  <layer name="B1 Floor" width="50" height="40" visible="0">
   <data encoding="base64" compression="zlib">
-   eJztlrEKwCAMRN3s0v7/55ZuGcRoEutF7sEthYKPGJNS7FyDQec7Y1VCj/+gBxb0wOIkD5na+JbBQyI9MkOP/Yz0Rwa096rlgbhTWj3Q3uhMHto90Dxm/lnt8SjnjQrr4SNTf/Q4yWN2DiLOD0nmvUSC5OGpN5rHTP+h7okWj11zrccKj4hEeljmuTd3sIdnXzqhHif1xw5ma7viThBCCMnBC4v9Drg=
+   eJztlrsOAzEIBK+7NMn/f26ULoocM36AF4mVaE6Wz2NY8HXN6wFDXZ8z3kYUR5yKQ0vFwfaO6nfeHFH5/J0Td+NbBg7P/ypy0LlP8uutXl0RH5FQ8vxsPiI4Zuum1xNOcdB66K0tDnZGWsvUF5Sj5ZUVjpdxzl1BPL/CEZWP0313pz9oP/PioHOY+uO0rFo+ed8jiur13srKYb2LFGumJdpHM3BkyMdoT6f+oPN1F//IjPteTzisWnyCfai8OZTyQf3xb12EVt51Sn1sJh+jocKRQSr3WSqVSm/s5xH6
   </data>
  </layer>
  <layer name="B1 Overlay" width="50" height="40" visible="0">
   <data encoding="base64" compression="zlib">
-   eJztzwENADAMw7Ay+PmjHYlJ/SUbQZLAX247AACAmtMOWOIDAAAA4E0DBaMAPg==
+   eJztz8ENACAMA7FuAPtP2w87lFS2lH+uCrLc6QMAAMHOWzodf9nSAQAAANBhBgCJ
   </data>
  </layer>
  <layer name="B1 Walls" width="50" height="40" visible="0" opacity="0.45">
   <data encoding="base64" compression="zlib">
-   eJztlu0KwCAIRev9X3p/JcbmR9ZV7oEYNBaeqdgYfqZyoaOJkR7noAcW9MCik8c6JyrOD8lcnlWhx300/VGBvzjf3iPeKb0e3vOyqOQRqQPrN9kep2A+YlTqjy86eVjnIOL8kFS+l0iQPCL5RvOw7iPeEz0envOyyfDYsaxo6+dk3ez0iMTQIR+d+uMG1v+eUROEEEJq8ACwvwDj
+   eJztl0sOgCAMRPH+l3ZrCML0X5J5iQsjUIYyFMfQ84BPd5A5Ukce1NEL6sD6ZZ130Tos/aWx5nXzqh+ZOiLjdtSB1n0kv9Hs9pV3jiJBPa/NBxrDgnbf7PJWpQP9vmtLHWc8/jHQtrOOlVe0ZJ7fiOcjxvbOBzKXSDz9YVkvK5I6jPqjmtNerlxvCVlnfTS36jjdizrumRXo/G7QcUM+pGc66g+0vnrpl9S477u0n7WddRyrjk75QP3x1y6D6rtZVhyJXyvvIl5+rabLehJCyAtvCAE/
   </data>
  </layer>
  <layer name="B1 Events" width="50" height="40" visible="0">
   <data encoding="base64" compression="zlib">
-   eJztz8EJACAMBMG0rT5s3Q4EBQmRme999iKglp4dAABAmpYdcGBstko/dn75AQC8MbMDAAAuLMb1AuA=
+   eJztz7EJACAQBEHbVgNbN7EAEUFOZuCzD25LgSzt9QAAgGB1XbqEjr7xk9Cx45cOAOCu8XoAAMCBCf2iBT0=
   </data>
  </layer>
  <layer name="B2 Floor" width="50" height="40" visible="0">
   <data encoding="base64" compression="zlib">
-   eJztl7EOwzAIRP0D7ZIh3vL/f5mpkmVBDATjc8VwQ6ImuefD4J6llDOlUlVotdcRxyVQNIdmfX+ayWHNmvMl9dvq68RBeamDd9fut+11fz8qj7cc1Hv6Z1A4uPVF5Tgan4fiu1Q9WXtCdB7td6k8ImeCdX9I+xeX0QwOj6wl9Y8+q7n1eMolqt5m1CtaPpL624Vj5IvqX1d3P4rjad1HfQmN48N41oqak7vnsXJPeO6P1f4lOY0yROKwZIXSa7Uc3ufZlRyrvSRHcqBpdw5qTkj7lMf/OO8cLHMDaeZIvGjPa4gcb8/KKBz/ksdO+8Pac5D6VSqVwtQNVIu+Sg==
+   eJztlb0OwjAMhLMwwtKh3fr+b8kCUhUlF//HgQ63gHrxZ8eXvZSy32LpYGh2rSOOk6BoDk5/v/LkkM6aWhdFLyOO2vfxEfI+Lv/VPZ81Dy0H+i1qP6gcvf5m5dguHBvz3BGHZ+5q5lGfizi8Jd2PXq8p3NbizJvbiyhZzv7myMfhLbR30Zminbcmk73yPprjWeLu56x5UN7uDBxSb4tzKXu+CkfEff5FDk7eSzhqXw8Or7c3koPz/mo4suT9v3NE5C61BikH6ot3vRZ1tDxH36NcRDs88tfkcMuTwtHbnd6eUTmkOXxztN8bxEG5L71vkBfy5HB4adQbjs/q80C5uMp+cLLaOncjObRCHFRl4UD3NovnKnoD24HCLQ==
   </data>
  </layer>
  <layer name="B2 Overlay" width="50" height="40" visible="0">
   <data encoding="base64" compression="zlib">
-   eJzt1zEKwCAMQFGXzvb+p3UpCKEdLAVjfQ8yuPkHIZYC7Oq4ZnU65jrDedWOSAeZ1TBA520AAPBkdEfMsFfG/9+bO2Xo+IKOXP7SAXCnAcF6AbU=
+   eJztzzENAAAIA0Ec4N8tFggJDORu/g6NAAD4L4ddd3fFDwAAAACAPQVnoQCI
   </data>
  </layer>
  <layer name="B2 Walls" width="50" height="40" visible="0" opacity="0.35">
   <data encoding="base64" compression="zlib">
-   eJztl9EOgCAIRfP/f7rX5kC5gAKNs/UQQ+OCij1PgzKAJzPS+G7rQPKL5FmrQxsD9z1rPi06KNsQ+Hx9x8J+qx6UDdFB+ezekXi04ygdXH4r6ZCM59bZbDt17lrqQdWFG3Ma7f6QzDPPd1KPV629fKKR9pzb681KhfpI1l8VHTs71z9QrR6g+37lE63De66IfX66HtF47Y9o0PvS6v6SlV2c1XR432dvU239cLSOXLSOHFB9QnpOefzHeWHpG5l6jiQWbb4z6cg6N/qtv9Sj0v7Q5jzTedU0TU5eHtIBLQ==
+   eJztVUkOxCAMK///9FyrURY7C0uFpQo1ECcGEp7ngsUgvp2B5jdbB7O/zD5HdURz6Nq3jA7JNoA177XDsM06D8nG6LBsFgeaT9RP0qHt70k6UH9PR2ffzZyHdv9WvAHR+pDWe3Xe9TExPR2rUBn76tgr9uoaOAXZPtjZ79k83mPUP7smi+7z0Lirz6rzffV0ZOMidV6BGToy82ycL+lg+j3L/88jzWcQ4dlVB/P+srFn3SskhjYyHNH5ClTpmNF30RweYYzwZfwRfmRvmDysmtb8rb7o1bDFn+nDEieiQ/tHfCwdCK4OmwfpB5H7gtiR3oTq6EJVr/zCeXg5af871QfC09V30fiabdadt2Jae+Ddk1U6Kuq3m/MU/ACdAAHk
   </data>
  </layer>
  <layer name="B2 Events" width="50" height="40" visible="0">
   <data encoding="base64" compression="zlib">
-   eJzt18sKgCAQBVC/uteib2+pSQRJ6FDngDDLexfCTEpAdMvoAHBjK+apmOfeQeBH1uoBWaS/sY8OAADAydMdMcJeWd9/LZki9HiDHrF8pQfAlQP1hg22
+   eJztzysOACEMQEFOzcfs2bEIBCC2kMyoijZ5TQm4XY0OgEV5mEtYBcy1w73Vu7/4A97xRQcAAAAAsK0D6A0GJQ==
   </data>
  </layer>
  <layer name="UFO Floors" width="50" height="40" visible="0">
@@ -70,7 +70,7 @@
  </layer>
  <layer name="UFO Overlay" width="50" height="40" visible="0">
   <data encoding="base64" compression="zlib">
-   eJztzgENAAAIA6BHsH9aY3w6SEACXDTtAAAAAAAAADyz148AEQ==
+   eJztzgENAAAIA6BHsX9KY3w6SEACXDTtAAAAAAAAADyzj+0AIQ==
   </data>
  </layer>
  <layer name="UFO Walls" width="50" height="40" visible="0" opacity="0.29">
@@ -80,27 +80,27 @@
  </layer>
  <layer name="UFO Events" width="50" height="40" visible="0">
   <data encoding="base64" compression="zlib">
-   eJztzrENAAAEAEFzs7wF1CJyV371EcB1NbRcvwAAAAAAAIDfGn+2APY=
+   eJztz7ERACAMA7HMTMvyNDAB4Qic1Lj1R3BCu30giY4a+tzXOxYdtfzSAQAAAAAAsGsAUfUDmg==
   </data>
  </layer>
  <layer name="F2 Floors" width="50" height="40">
   <data encoding="base64" compression="zlib">
-   eJzt0jEOgCAQRUEaK+hU7n9U18SCWNpswJnkhXZ/QinAn9WoRfvz1txzPrvv3obsyLXSv2pDduRaaccRnVEvc+94BwAAAAAwuwtt6AIH
+   eJztl8EOwyAIhr146m7d9v6PuvawxDClPyBiF/+ES7sJnyDYlP5fm8Fm0hnPQ2GLw0eUg6ujO3DsiY/vDhy5sMURK2ldXfFGCd3nGsdMM0bKMWtv1nJc5SGC43nY67A345vGx8UYxYHWNBpfBIdEGo7IuyVS91x/ojMpqldb747efRhd35qP1lq91Npnb47eZ17C0eubZHHwHGh9tOJE36O+rDza/eY4Rt+/uDyMyof3vLfsN3o+FgcupN6s82MEByeNf8o46nzU/PfsoWXNSjkkdVDz17OH0r2Qcnz97Qnzrc0H8pyuoeGwzCGkrqmvrfFcE4NmDUs+zt/kBkcu3o3i0JyPGTks+ajxWfocXUN7xsoYEX5tT5LGoTX0/55zTlrzVvPkGG1Lv/oANF4j4g==
   </data>
  </layer>
  <layer name="F2 Overlay" width="50" height="40" visible="0">
   <data encoding="base64" compression="zlib">
-   eJztwQEBAAAAgJD+r+4ICgAAAAAAAAAYH0AAAQ==
+   eJztzzENAAAIwDAc4N8tLycHD6RNJmARADPZuuzLBwAAAAAAALsKftcAWw==
   </data>
  </layer>
  <layer name="F2 Walls" width="50" height="40" opacity="0.42">
   <data encoding="base64" compression="zlib">
-   eJzt1CEOADAIBEH6/0/XNhVtggIykyBOriECyFif3cWkjvs6mtTx2l3oqEVHLVP+FQAAAADAaQPjygAe
+   eJztVlsOAyEI1Ptfur+NRRje1jiJyfpgYERxx7gf09FOgjWepyMHazzoOfoHHZ51XUDv79NRg5vOFdfn1p30xlh1WLgzkZUPjisDGh2T+OY4q3WgZxqNr0OHBhYdnf+WyLm33IsOHR677Dqs+Qf05GPHFYWImorMU9xdOqL4nw7eD3ofNPYcj3QWPfDsd3Td8dpLTbLT8FJzY8TtBxeL1XY3NoWxaNymI/P9qNDBweJ/twdaHiuyaiiVF29MHI/Fh2ad5R6i7/g6Z8kHMk71s3Rw6zV5lGyydXjyQfno1KHByTqi8+GpcysH1dfwULFSvtbvSCB7IzXU/ttflo4qZOqobg+/+ACHGQHF
   </data>
  </layer>
  <layer name="F2 Events" width="50" height="40">
   <data encoding="base64" compression="zlib">
-   eJztzkENAAAIBKALrf3N4MvNQQISgKSuA7zU1wEAAAAAAICFAdC1AOo=
+   eJzt2DEKgDAMBdAcwNuqg+DhXVroIlSXkvAe/C1D/xJIIwAijomZa0hmVXpkcE7O3S3ZVekB0G0tdhsAAHy3r34AS7zdT9n+jar0APjjAY2oCZ8=
   </data>
  </layer>
 </map>

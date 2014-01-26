@@ -1,5 +1,12 @@
 /* vim: set ai ts=8 sw=2 sts=2 et: */
 var Tiled = (function () {
+  function collides(a, b) {
+    return ((a.y < b.y+b.height) &&
+            (a.x < b.x+b.width) &&
+            (b.x < a.x+a.width) &&
+            (b.y < a.y+a.height));
+  }
+
   function TMap(json, image) {
     var map = JSON.parse(json);
     this.width = map.width;
@@ -19,27 +26,32 @@ var Tiled = (function () {
 
   TMap.prototype.currentLevel = function () {
     return this.levels[this.level];
-  }
+  };
 
   TMap.prototype.setLevel = function (level) {
     this.level = level;
-  }
+  };
+
+  TMap.prototype.getLevel = function (i) {
+    return this.levels[i];
+  };
 
   TMap.prototype.map = function () {
     return this.levels[this.level].map;
   };
+
   TMap.prototype.objects = function () {
     return this.levels[this.level].overlay;
   };
 
   TMap.prototype.checkCollision = function (sprite, gorilla) {
     return this.levels[this.level].checkCollision(sprite, gorilla);
-  }
+  };
 
   TMap.prototype.place = function (sprite, x, y) {
     sprite.x = 32*x;
     sprite.y = 32*y;
-  }
+  };
 
   TMap.prototype.on = function (eventName, eventNum, fn) {
     if (eventName === 'over') {
@@ -55,13 +67,30 @@ var Tiled = (function () {
         this.touchCallbacks[eventNum].push(fn);
       }
     }
-  }
+  };
 
   TMap.prototype.update = function (state) {
     var level = this.currentLevel(),
         x = Math.floor((state.player.x+state.player.width/2)/32),
         y = Math.floor((state.player.y+state.player.height)/32),
         evNum = level.eventIndex(x,y);
+    // Move objects
+    level.entities.forEach(function (ent) {
+      ent.update();
+      if (collides(ent, state.player.colbox)) {
+        state.end();
+      }
+      level.entities.forEach(function (other) {
+        if (ent === other) {
+          return;
+        }
+        if (collides(ent, other)) {
+          ent.collided();
+        }
+      });
+    });
+
+    // Issue events
     if (evNum >= 0 && this.callbacks[evNum] !== undefined) {
       if (!state.nullEvent) {
         var ev = {
@@ -117,7 +146,7 @@ var Tiled = (function () {
         }
       }
     }
-  }
+  };
 
   function TLayer(data, width, height, collision) {
     this.data = [];
@@ -136,6 +165,7 @@ var Tiled = (function () {
   function TLevel(layers, width, height, tileset) {
     var keepIndices;
     var count = 0;
+    this.entities = [];
     this.map = new Map(32, 32);
     this.map.image = tileset;
     this.overlay = new Map(32, 32);
@@ -160,11 +190,11 @@ var Tiled = (function () {
 
   TLevel.prototype.eventIndex = function (x, y) {
     return this.layers[3].data[y][x];
-  }
+  };
 
   TLevel.prototype.removeEvent = function (x, y) {
     this.layers[3].data[y][x] = -1;
-  }
+  };
 
   TLevel.prototype.hitTest = function (x, y, gorilla) {
     if (!gorilla) {
@@ -205,7 +235,7 @@ var Tiled = (function () {
     }
     // Otherwise 
     return false;
-  }
+  };
 
   TLevel.prototype.checkCollision = function (sprite, gorilla) {
     var left = false,
@@ -214,12 +244,23 @@ var Tiled = (function () {
         bottom = false,
         cx = sprite.x+sprite.width/2,
         b = sprite.y+sprite.height,
+        bounds;
+
+    if (sprite.colbox) {
         bounds = {
           left: cx-sprite.colbox.width/2,
           right: cx+sprite.colbox.width/2,
           top: b-sprite.colbox.height,
           bottom: b
         };
+    } else {
+        bounds = {
+          left: cx-sprite.width/2,
+          right: cx+sprite.width/2,
+          top: b-sprite.height,
+          bottom: b
+        };
+    }
 
     if (this.intersect({
           start: {x: bounds.left, y: bounds.top}, 
@@ -258,9 +299,25 @@ var Tiled = (function () {
     this.overlay.loadData(this.layers[1].data);
   };
 
+  TLevel.prototype.addSmallBlock = function (x, y, motion) {
+    var block = new SmallBlock(this, motion);
+    block.x = x*32;
+    block.y = y*32;
+    this.entities.push(block);
+    console.log(block);
+  };
+
+  TLevel.prototype.addLargeBlock = function (x, y, motion) {
+    var block = new LargeBlock(this, motion);
+    block.x = x*32+1;
+    block.y = y*32+1;
+    this.entities.push(block);
+  };
+
   return {
     Parse: function (json, image) {
       return new TMap(json, image);
     }
   };
 }());
+
