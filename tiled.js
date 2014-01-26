@@ -5,6 +5,7 @@ var Tiled = (function () {
     this.width = map.width;
     this.height = map.height;
     this.callbacks = [];
+    this.touchCallbacks = [];
     this.levels = [];
     this.level = 0;
 
@@ -40,11 +41,19 @@ var Tiled = (function () {
     sprite.y = 32*y;
   }
 
-  TMap.prototype.on = function (eventNum, fn) {
-    if (this.callbacks[eventNum] === undefined) {
-      this.callbacks[eventNum] = [fn];
-    } else {
-      this.callbacks[eventNum].push(fn);
+  TMap.prototype.on = function (eventName, eventNum, fn) {
+    if (eventName === 'over') {
+      if (this.callbacks[eventNum] === undefined) {
+        this.callbacks[eventNum] = [fn];
+      } else {
+        this.callbacks[eventNum].push(fn);
+      }
+    } else if (eventName === 'touch') {
+      if (this.touchCallbacks[eventNum] === undefined) {
+        this.touchCallbacks[eventNum] = [fn];
+      } else {
+        this.touchCallbacks[eventNum].push(fn);
+      }
     }
   }
 
@@ -71,6 +80,42 @@ var Tiled = (function () {
       }
     } else {
       state.nullEvent = false;
+    }
+    // Now handle touching object events
+    var left = Math.floor((state.player.x+state.player.width/2-state.player.colbox.width/2)/32),
+        xmid = Math.floor((state.player.x+state.player.width/2)/32),
+        right = Math.floor((state.player.x+state.player.width/2+state.player.colbox.width/2)/32),
+        top = Math.floor((state.player.y+state.player.height-state.player.colbox.height)/32);
+        mid = Math.floor((state.player.y+state.player.height-state.player.colbox.height/2)/32);
+        bottom = Math.floor((state.player.y+state.player.height)/32);
+
+    var me = this;
+    handleTouched(left, top);
+    handleTouched(left, mid);
+    handleTouched(left, bottom);
+    handleTouched(xmid, top);
+    handleTouched(xmid, mid);
+    handleTouched(xmid, bottom);
+    handleTouched(right, top);
+    handleTouched(right, mid);
+    handleTouched(right, bottom);
+    function handleTouched(x, y) {
+      var evNum = level.eventIndex(x, y);
+      if (evNum >= 0 && me.touchCallbacks[evNum] !== undefined) {
+        var ev = {
+          x: x,
+          y: y,
+          tile: level.layers[0].data[x,y],
+          remove: function () {
+            level.removeEvent(x,y);
+          }
+        };
+        for (var i=0; i<me.touchCallbacks[evNum].length; i++) {
+          state.playable = false;
+          me.touchCallbacks[evNum][i](ev);
+          state.nullEvent = true;
+        }
+      }
     }
   }
 

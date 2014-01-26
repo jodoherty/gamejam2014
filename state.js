@@ -42,7 +42,7 @@ var State = (function () {
     this.nullEvent = false;
 
     var state = this;
-    this.tmap.on(127, function () {
+    this.tmap.on('over', 127, function () {
       // Fall down to the basement 
       state.stop();
       game.assets['assets/sounds/falling.wav'].play();
@@ -50,7 +50,7 @@ var State = (function () {
         state.playable = true;
       });
     });
-    this.tmap.on(125, function () {
+    this.tmap.on('over', 125, function () {
       // Take stairs to the basement 
       state.stop();
       game.assets['assets/sounds/stairs.wav'].play();
@@ -58,7 +58,7 @@ var State = (function () {
         state.playable = true;
       });
     });
-    this.tmap.on(126, function () {
+    this.tmap.on('over', 126, function () {
       // Take stairs to first floor
       state.stop();
       game.assets['assets/sounds/stairs.wav'].play();
@@ -66,7 +66,7 @@ var State = (function () {
         state.playable = true;
       });
     });
-    this.tmap.on(123, function () {
+    this.tmap.on('over', 123, function () {
       // Fall to the first floor
       state.stop();
       game.assets['assets/sounds/falling.wav'].play();
@@ -74,7 +74,7 @@ var State = (function () {
         state.playable = true;
       });
     });
-    this.tmap.on(124, function () {
+    this.tmap.on('over', 124, function () {
       // Take stairs to the second floor
       state.stop();
       game.assets['assets/sounds/stairs.wav'].play();
@@ -82,7 +82,7 @@ var State = (function () {
         state.playable = true;
       });
     });
-    this.tmap.on(122, function () {
+    this.tmap.on('over', 122, function () {
       // Take stairs to the sewer
       state.stop();
       game.assets['assets/sounds/stairs.wav'].play();
@@ -90,7 +90,7 @@ var State = (function () {
         state.playable = true;
       });
     });
-    this.tmap.on(121, function (ev) {
+    this.tmap.on('touch', 121, function (ev) {
       // Gain a new costume
       state.stop();
       state.tmap.currentLevel().removeObject(ev.x, ev.y);
@@ -99,22 +99,25 @@ var State = (function () {
       state.changeCostumes();
       state.playable = true;
     });
-    this.tmap.on(120, function (ev) {
+    this.tmap.on('touch', 120, function (ev) {
       // Break wall
       state.stop();
       if (state.costume === 2) {
+        ev.remove();
         game.assets['assets/sounds/break.wav'].play();
         setTimeout(function () {
           state.tmap.currentLevel().removeObject(ev.x, ev.y);
-          ev.remove();
           state.playable = true;
-        }, 1000);
+        }, 200);
       } else {
         state.playable = true;
       }
     });
 
-    this.downStart();
+    var state = this;
+    setTimeout(function () {
+      state.downStart();
+    }, 1000);
   }
 
   State.prototype.toLevel = function (level, timeout, next) {
@@ -154,6 +157,7 @@ var State = (function () {
     }
 
     this.tmap.update(this);
+    
   };
 
   State.prototype.follow = function() {
@@ -213,8 +217,22 @@ var State = (function () {
     var cx = this.player.x+this.player.width/2.0,
         y = this.player.y+this.player.height;
 
-    this.game.assets['assets/sounds/rustle.wav'].play();
     this.costume = (this.costume+1)%this.costumeLimit;
+    this.costumes[this.costume].x = cx-this.costumes[this.costume].width/2.0;
+    this.costumes[this.costume].y = y-this.costumes[this.costume].height;
+    var colliRect = this.tmap.checkCollision(this.costumes[this.costume], this.costume === 2);
+    if (colliRect.left || colliRect.right || colliRect.top || colliRect.bottom) {
+      this.costume--;
+      if (this.costume < 0) {
+        if (this.costumeLimit > 0) {
+          this.costume = this.costumeLimit-1;
+        } else {
+          this.costume = 0;
+        }
+      }
+      return;
+    }
+    this.game.assets['assets/sounds/rustle.wav'].play();
     this.player.image = this.costumes[this.costume].image;
     this.player.width = this.costumes[this.costume].width;
     this.player.height = this.costumes[this.costume].height;

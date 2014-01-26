@@ -3,7 +3,7 @@
  <tileset firstgid="1" name="Masion" tilewidth="32" tileheight="32">
   <image source="Masion Tile Set.png" width="256" height="512"/>
  </tileset>
- <layer name="F1 Floor" width="50" height="40" visible="0">
+ <layer name="F1 Floor" width="50" height="40" opacity="0.27">
   <data encoding="base64" compression="zlib">
    eJztls0OgjAQhPdCQBMPcFbf/zEtkYMxdv9tt2QnmQuUsl+nWwDw0VI8H16c5uyh5IilM3Fciq8wPsdavMH4HGfZV8kRR8kRS5E59nruxY/iJ+D1ReeYgVffaByYueMk/gcHZslYyZw9OXrkwd0r0fOw1Kpl3r3/G0/w/j/GMmzFoV3r6cMR8qiNo7weDJsjh8SW3o7SH1g+1DzJ0Z5D+43Hxmg4qF6garCuhVceXtn04rCcKZI99mt+znMSDm39tXo0mX3fvxk4sHWkrntxeORBZV97r7ZXOOtl5ajVKeHAeoWzpz36Q8uhzaYFh7RvPM5Ab46elnJEdiqVsukFnvobWQ==
   </data>
@@ -43,24 +43,64 @@
    eJztz8EJACAMBMG0rT5s3Q4EBQmRme999iKglp4dAABAmpYdcGBstko/dn75AQC8MbMDAAAuLMb1AuA=
   </data>
  </layer>
- <layer name="B2 Floor" width="50" height="40">
+ <layer name="B2 Floor" width="50" height="40" visible="0">
   <data encoding="base64" compression="zlib">
-   eJztl8EOgCAMQ/kB41Fv/v9fGg7EC2YrgzG0L+lJAtbZOVMiKCcgj3Ms+18K9fChOcOiKD48xHo8Pg5Bq+TjKz52QVYfXn1X4wOVNyP6VVQfaG+K7APZiz7aQXKruT7LB8Jb7aL6QGeMCDmvke9jS2v13RqWesz6DiJI+ViFWg5mPn/rbITmedRslteWmbzlHWnxUXsfyxza+o/wFx/IPIis9/ThqQj1QBUxHyj0Ie/bo3/3Om+lmYYQQgghfbkB9hxBqQ==
+   eJztl7EOwzAIRP0D7ZIh3vL/f5mpkmVBDATjc8VwQ6ImuefD4J6llDOlUlVotdcRxyVQNIdmfX+ayWHNmvMl9dvq68RBeamDd9fut+11fz8qj7cc1Hv6Z1A4uPVF5Tgan4fiu1Q9WXtCdB7td6k8ImeCdX9I+xeX0QwOj6wl9Y8+q7n1eMolqt5m1CtaPpL624Vj5IvqX1d3P4rjad1HfQmN48N41oqak7vnsXJPeO6P1f4lOY0yROKwZIXSa7Uc3ufZlRyrvSRHcqBpdw5qTkj7lMf/OO8cLHMDaeZIvGjPa4gcb8/KKBz/ksdO+8Pac5D6VSqVwtQNVIu+Sg==
   </data>
  </layer>
  <layer name="B2 Overlay" width="50" height="40" visible="0">
   <data encoding="base64" compression="zlib">
-   eJztwQEBAAAAgJD+r+4ICgAAAAAAAAAYH0AAAQ==
+   eJzt1zEKwCAMQFGXzvb+p3UpCKEdLAVjfQ8yuPkHIZYC7Oq4ZnU65jrDedWOSAeZ1TBA520AAPBkdEfMsFfG/9+bO2Xo+IKOXP7SAXCnAcF6AbU=
   </data>
  </layer>
  <layer name="B2 Walls" width="50" height="40" visible="0" opacity="0.35">
   <data encoding="base64" compression="zlib">
-   eJztlksSwCAIQ+39L90DtH4CAdHJm+mqKERAaU2gPMCX4cezP9POsx45U+sZZOjIQPlYX39Tf0Tu7/Wxut6rI+veZcbCiMlChM+qOtA8VNaB7CUddtB6WamnKjNCj158VXWg92mFPv/jptnTmo9d7yDCrD9OYXR/7Y7HUhNoP0fNZiPbKB2rSMf3H+N9j6gVj2022fnY0buoDjbSMbdl1ADL30kzjRBCCCG4vEk/AR8=
+   eJztl9EOgCAIRfP/f7rX5kC5gAKNs/UQQ+OCij1PgzKAJzPS+G7rQPKL5FmrQxsD9z1rPi06KNsQ+Hx9x8J+qx6UDdFB+ezekXi04ygdXH4r6ZCM59bZbDt17lrqQdWFG3Ma7f6QzDPPd1KPV629fKKR9pzb681KhfpI1l8VHTs71z9QrR6g+37lE63De66IfX66HtF47Y9o0PvS6v6SlV2c1XR432dvU239cLSOXLSOHFB9QnpOefzHeWHpG5l6jiQWbb4z6cg6N/qtv9Sj0v7Q5jzTedU0TU5eHtIBLQ==
   </data>
  </layer>
  <layer name="B2 Events" width="50" height="40" visible="0">
   <data encoding="base64" compression="zlib">
-   eJztzkEJAAAIBLBLbnYzHAh+tgRLAAAAuDbfAQAAAABqC+YQAH8=
+   eJzt18sKgCAQBVC/uteib2+pSQRJ6FDngDDLexfCTEpAdMvoAHBjK+apmOfeQeBH1uoBWaS/sY8OAADAydMdMcJeWd9/LZki9HiDHrF8pQfAlQP1hg22
+  </data>
+ </layer>
+ <layer name="UFO Floors" width="50" height="40" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJzt1TEKwDAIQFFPkL29/0FDB6EU0lnlPXDPJyRG1HAdppM88/2ZTi2nhm4tfw3vluqyY8WMjgn3MeF9PCb8V2nC/gAAAAAAAGrYgKcHvw==
+  </data>
+ </layer>
+ <layer name="UFO Overlay" width="50" height="40" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJztzgENAAAIA6BHsH9aY3w6SEACXDTtAAAAAAAAADyz148AEQ==
+  </data>
+ </layer>
+ <layer name="UFO Walls" width="50" height="40" visible="0" opacity="0.29">
+  <data encoding="base64" compression="zlib">
+   eJzt1TEOACAIBDD9/6eNgyPRyQBpE/a7ARgjhxlMJVHmSl1uWat0ecmoxz+denTYj63DvTo6/A8AAAAAACCHBchJACM=
+  </data>
+ </layer>
+ <layer name="UFO Events" width="50" height="40" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJztzrENAAAEAEFzs7wF1CJyV371EcB1NbRcvwAAAAAAAIDfGn+2APY=
+  </data>
+ </layer>
+ <layer name="F2 Floors" width="50" height="40">
+  <data encoding="base64" compression="zlib">
+   eJzt0jEOgCAQRUEaK+hU7n9U18SCWNpswJnkhXZ/QinAn9WoRfvz1txzPrvv3obsyLXSv2pDduRaaccRnVEvc+94BwAAAAAwuwtt6AIH
+  </data>
+ </layer>
+ <layer name="F2 Overlay" width="50" height="40" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJztwQEBAAAAgJD+r+4ICgAAAAAAAAAYH0AAAQ==
+  </data>
+ </layer>
+ <layer name="F2 Walls" width="50" height="40" opacity="0.42">
+  <data encoding="base64" compression="zlib">
+   eJzt1CEOADAIBEH6/0/XNhVtggIykyBOriECyFif3cWkjvs6mtTx2l3oqEVHLVP+FQAAAADAaQPjygAe
+  </data>
+ </layer>
+ <layer name="F2 Events" width="50" height="40">
+  <data encoding="base64" compression="zlib">
+   eJztzkENAAAIBKALrf3N4MvNQQISgKSuA7zU1wEAAAAAAICFAdC1AOo=
   </data>
  </layer>
 </map>

@@ -5,12 +5,12 @@ window.onload = function () {
   var game = new Game(640, 400);
 
   game.preload('assets/mansion-tileset.png', 
-    'assets/sewer-tileset.png', 
     'assets/player/person.png',
     'assets/player/mouse.png',
     'assets/player/gorilla.png',
     'assets/player/alien.png',
     'assets/player/ghost.png',
+    'assets/music/spooky.mp3',
     'assets/sounds/falling.wav',
     'assets/sounds/rustle.wav',
     'assets/sounds/stairs.wav',
@@ -19,18 +19,20 @@ window.onload = function () {
   );
 
   game.onload = function () {
+    game.bgm = game.assets['assets/music/spooky.mp3'];
+    game.bgm.play();
     var tmap = Tiled.Parse(game.assets['assets/map.json'], 
                            game.assets['assets/mansion-tileset.png']);
     tmap.setLevel(0);
     var costumes = [
       new Sprite(48, 64),
-      new Sprite(16, 16),
-      new Sprite(72, 72),
+      new Sprite(32, 32),
+      new Sprite(96, 96),
       new Sprite(48, 48),
       new Sprite(48, 48)
     ];
     costumes[0].image = game.assets['assets/player/person.png'];
-    costumes[0].speed = 2;
+    costumes[0].speed = 5;
     costumes[0].colbox = {
       width: 36,
       height: 36
@@ -50,8 +52,8 @@ window.onload = function () {
     costumes[3].image = game.assets['assets/player/alien.png'];
     costumes[3].speed = 2;
     costumes[3].colbox = {
-      width: 72,
-      height: 72
+      width: 84,
+      height: 84
     };
     costumes[4].image = game.assets['assets/player/ghost.png'];
     costumes[4].speed = 2;
@@ -64,6 +66,9 @@ window.onload = function () {
 
     game.addEventListener(Event.ENTER_FRAME, function () {
       state.update();
+      if (game.bgm.currentTime >= game.bgm.duration) {
+        game.bgm.play();
+      }
     });
     game.addEventListener(Event.RIGHT_BUTTON_DOWN, function () {
       if (state.playable) {
